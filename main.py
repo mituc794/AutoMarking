@@ -1,33 +1,34 @@
 import numpy as np
 import cv2
+import get_points
+import os
+import img_process
+
+
+
+# Define the region of interest (ROI)
+x, y, w, h = 100, 950, 1650, 1700 
+
+def check_matching_dots(dot_list1, dot_list2, threshold=10):
+    matching_dots = []
+    for (x1, y1, r1) in dot_list1:
+        for (x2, y2, r2) in dot_list2:
+            distance = np.sqrt((x1 - x2)**2 + (y1 - y2)**2)
+            if distance < threshold:
+                matching_dots.append(((x1, y1, r1), (x2, y2, r2)))
+    return matching_dots
 
 # Load image, grayscale, Otsu's threshold
-image = cv2.imread('demo.jpg')
-gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)[1]
+directory = 'a'
+str_list = os.listdir(directory)
+key_dot_list,_ = get_points.get_points('a/KEY.JPG')
 
-# Filter out large non-connecting objects
-cnts = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-cnts = cnts[0] if len(cnts) == 2 else cnts[1]
-for c in cnts:
-    area = cv2.contourArea(c)
-    if area < 100:
-        cv2.drawContours(thresh,[c],0,0,-1)
+for file_path in str_list:
+    image = cv2.imread('a/'+file_path)
+    dot_list,_ = get_points.get_points('a/'+file_path)
+    matching_dots = check_matching_dots(key_dot_list, dot_list)
+    print('Diem cua '+file_path+' la: ', len(matching_dots))
+    img_process.img_process(key_dot_list, 'a/'+file_path)
 
-# Morph open using elliptical shaped kernel
-kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3,3))
-opening = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, kernel, iterations=3)
 
-# Find circles 
-cnts = cv2.findContours(opening, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-cnts = cnts[0] if len(cnts) == 2 else cnts[1]
-for c in cnts:
-    area = cv2.contourArea(c)
-    #if area > 20 and area < 50:
-    if area > 200:
-        ((x, y), r) = cv2.minEnclosingCircle(c)
-        cv2.circle(image, (int(x), int(y)), int(r), (36, 255, 12), 2)
-
-cv2.imshow('opening', opening)
-cv2.imshow('image', image)
 cv2.waitKey()
