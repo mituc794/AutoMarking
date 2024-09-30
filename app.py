@@ -1,15 +1,18 @@
 import numpy as np
 import cv2
 import get_points
-
-# Load image, grayscale, Otsu's threshold
-ls = ['1', '2', '3']
-str_list = ['a/' + item + '.JPG' for item in ls]
-image = cv2.imread('a/KEY.JPG')
-ans = [cv2.imread(file_path) for file_path in str_list]
+import os
 
 # Define the region of interest (ROI)
-x, y, w, h = 100, 950, 1650, 1700  # Example coordinates, adjust as needed
+x, y, w, h = 100, 950, 1650, 1700 
+
+# Load image, grayscale, Otsu's threshold
+directory = 'a'
+str_list = os.listdir(directory)
+image = cv2.imread('a/KEY.JPG')
+ans = [cv2.imread('a/'+file_path) for file_path in str_list]
+
+# Add ROI to the image
 roi = image[y:y+h, x:x+w]
 
 # Draw a red rectangle around the ROI
@@ -44,8 +47,7 @@ for c in cnts:
         cv2.circle(roi, (int(x), int(y)), int(r), (36, 255, 12), 2)
 
 # Save the processed image
-for i in range(len(ls)):
-    cv2.imwrite('b/processed_demo'+ls[i]+'.jpg', ans[i])
+for i in range(len(str_list)):
+    cv2.imwrite('b/'+str_list[i], ans[i])
 
-cv2.imshow('image', image)
 cv2.waitKey()
