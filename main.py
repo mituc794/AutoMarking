@@ -21,10 +21,11 @@ key_dot_list,_ = get_points.get_points('a/KEY.JPG')
 
 for file_name in str_list:
     image = cv2.imread('a/'+file_name)
-    dot_list,_ = get_points.get_points(file_path='a/'+file_name,is_roi=True)
+    dot_list,_ = get_points.get_points(file_path='a/'+file_name,have_roi=True)
     matching_dots = map_matching.check_matching_dots(key_dot_list, dot_list)
-    print('Diem cua '+getID.getID('a/'+file_name)+' la: ', len(matching_dots))
-    img_process.img_process(key_dot_list, 'a/'+file_name, 'b/')
+    id = getID.getID('a/'+file_name)
+    print('Diem cua '+id+' la: ', len(matching_dots))
+    img_process.img_process(key_dot_list, 'a/'+file_name,id )
 
 
 cv2.waitKey()

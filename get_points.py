@@ -1,8 +1,8 @@
 import numpy as np
 import cv2
 
-def get_points(file_path, is_roi = True):
-    if is_roi:
+def get_points(file_path, have_roi = True):
+    if have_roi:
         # Load image, grayscale, Otsu's threshold
         image = cv2.imread(file_path)
 

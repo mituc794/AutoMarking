@@ -2,6 +2,7 @@ import numpy as np
 import cv2
 import img_process
 import map_matching
+import get_points
 
 def ID_map_test(test_image=False):
     # Two lines below are used to manually map the ID points
@@ -48,6 +49,7 @@ def getID(file_path, x=750, y=250, w=400, h=600):
 
     # Define the region of interest (ROI)
     roi = image[y:y+h, x:x+w]
+    cv2.imwrite('map/res_mapping/ID_roi.jpg', roi)
 
     gray = cv2.cvtColor(roi, cv2.COLOR_BGR2GRAY)
     thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)[1]
@@ -73,7 +75,7 @@ def getID(file_path, x=750, y=250, w=400, h=600):
         if area > 500:
             ((x, y), r) = cv2.minEnclosingCircle(c)
             dot_list.append((int(x), int(y), int(r)))
-            #cv2.circle(image, (int(x)+750, int(y)+250), int(r), (36, 255, 12), 2)
+            cv2.circle(image, (int(x)+750, int(y)+250), int(r), (255, 0, 0), 2)
 
     keymap = ID_map_test()
     dot_list.sort(key=lambda x: x[0])
@@ -96,3 +98,14 @@ def getID(file_path, x=750, y=250, w=400, h=600):
     #cv2.imwrite('ID.jpg', image)
     #cv2.waitKey()
     return ID
+
+def getID_test(x, y, w, h):
+    image = cv2.imread('map/src/ID_roi.jpg')
+    roi = image[y:y+h, x:x+w]
+    cv2.imwrite('map/res_mapping/ID_roi.jpg', roi)
+    ls,_ = get_points.get_points('map/res_mapping/ID_roi.jpg', 0)
+    print(ls)
+    return
+
+#uncomment the line below to test the getID function
+#getID_test(750, 250, 400, 600)
