@@ -39,3 +39,18 @@ def img_process(dot_list, src_image_path, id):
     cv2.imwrite(processed_image_path, image)
     print('Image processed and saved to:', processed_image_path)
     
+def img_process_4test(dot_list, src_image_path, dst_image_path):
+    
+    # Load the image
+    image = cv2.imread(src_image_path)
+
+    
+    # Draw circles on the image
+    for (x, y, r) in dot_list:
+        cv2.circle(image, (x, y), r, (36, 255, 12), thickness=2) #thickness=2, thickness=-1 to fill
+    
+    
+    # Save the processed image in the 'b/' directory with the same filename
+    processed_image_path = dst_image_path+'test.jpg'
+    cv2.imwrite(processed_image_path, image)
+    print('Image processed and saved to:', processed_image_path)

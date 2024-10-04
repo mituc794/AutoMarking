@@ -104,8 +104,10 @@ def getID_test(x, y, w, h):
     roi = image[y:y+h, x:x+w]
     cv2.imwrite('map/res_mapping/ID_roi.jpg', roi)
     ls,_ = get_points.get_points('map/res_mapping/ID_roi.jpg', 0)
+    img_process.img_process_4test(ls, 'map/res_mapping/ID_roi.jpg', 'map/res_mapping/')
     print(ls)
     return
 
 #uncomment the line below to test the getID function
-#getID_test(750, 250, 400, 600)
+getID_test(750, 250, 400, 600)
+
