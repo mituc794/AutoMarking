@@ -48,7 +48,7 @@ def get_points(file_path, have_roi = True):
         cnts = cnts[0] if len(cnts) == 2 else cnts[1]
         for c in cnts:
             area = cv2.contourArea(c)
-            if area < 100:
+            if area < 500:
                 cv2.drawContours(thresh, [c], 0, 0, -1)
 
         # Morph open using elliptical shaped kernel
@@ -61,9 +61,11 @@ def get_points(file_path, have_roi = True):
         dot_list = []
         for c in cnts:
             area = cv2.contourArea(c)
-            if area > 500:
+            if area >= 500:
                 ((x, y), r) = cv2.minEnclosingCircle(c)
                 dot_list.append((int(x), int(y), int(r)))
 
+        cv2.imshow('gray', thresh)
+        cv2.waitKey()
         return dot_list,file_path
 

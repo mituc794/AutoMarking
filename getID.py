@@ -20,6 +20,8 @@ def ID_map_test(test_image=False):
     key_map_7=[(310, 552, 18), (310, 507, 18), (310, 460, 18), (310, 413, 18), (310, 366, 18), (310, 320, 18), (310, 275, 18), (310, 227, 18), (310, 181, 18), (310, 134, 18)]
     key_map_8=[(356, 552, 18), (356, 507, 18), (356, 460, 18), (356, 413, 18), (356, 366, 18), (356, 320, 18), (356, 275, 18), (356, 227, 18), (356, 181, 18), (356, 134, 18)]
     
+    
+    
     key_map = []
     key_map.append(key_map_1)
     key_map.append(key_map_2)
@@ -108,6 +110,7 @@ def getID_test(x, y, w, h):
     print(ls)
     return
 
-#uncomment the line below to test the getID function
-getID_test(750, 250, 400, 600)
+#uncomment the line below to t  est the getID function
+getID_test(100, 1200, 1650, 2400)
+
 
